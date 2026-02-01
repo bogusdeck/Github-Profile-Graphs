@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const languageStats = await getLanguageStats();
     
     // Convert to language array with percentages
-    const languages: LanguageData[] = Object.entries(languageStats)
+    const languages: Language[] = Object.entries(languageStats)
       .map(([name, stats]: [string, any]) => ({
         name,
         value: Math.round((stats.totalBytes / Object.values(languageStats).reduce((sum: number, s: any) => sum + s.totalBytes, 0)) * 100),
