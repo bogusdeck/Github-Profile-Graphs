@@ -8,6 +8,15 @@ interface GitHubEvent {
   };
 }
 
+interface LanguageStats {
+  [key: string]: {
+    totalBytes: number;
+    repos: number;
+    stars: number;
+    commits: number;
+  };
+}
+
 export async function githubFetch(path: string): Promise<any> {
   const res = await fetch(`${GITHUB_API}${path}`, {
     headers: {
@@ -37,12 +46,12 @@ export async function getDailyCommits(days = 7) {
   const today = new Date();
   const counts = Array(days).fill(0);
 
-  events.forEach(event => {
+  events.forEach((event: GitHubEvent) => {
     if (event.type !== "PushEvent") return;
 
     const date = new Date(event.created_at);
     const diff = Math.floor(
-      (today - date) / (1000 * 60 * 60 * 24)
+      (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
     );
 
     if (diff >= 0 && diff < days) {
@@ -67,7 +76,7 @@ export async function getStreak() {
   // Check each day backwards
   for (let i = 0; i < 365; i++) {
     const dateStr = currentDate.toISOString().split('T')[0];
-    const hasActivity = events.some(event => {
+    const hasActivity = events.some((event: GitHubEvent) => {
       if (event.type !== "PushEvent") return false;
       const eventDate = new Date(event.created_at).toISOString().split('T')[0];
       return eventDate === dateStr;
@@ -100,11 +109,11 @@ export async function getUserRepositories(): Promise<any[]> {
   }));
 }
 
-export async function getLanguageStats(): Promise<any> {
+export async function getLanguageStats(): Promise<LanguageStats> {
   const username = process.env.GITHUB_USERNAME;
   const repos = await getUserRepositories();
   
-  const stats = {};
+  const stats: LanguageStats = {};
   
   // Get language details for each repository
   for (const repo of repos) {
