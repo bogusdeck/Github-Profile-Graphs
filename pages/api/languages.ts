@@ -15,64 +15,91 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const languageStats = await getLanguageStats();
     
-    // Calculate total bytes and convert to percentages
-    const totalBytes = Object.values(languageStats).reduce(
-      (sum: number, stats: any) => sum + stats.totalBytes, 
-      0
-    );
-
     // Convert to language array with percentages
-    const languages: Language[] = Object.entries(languageStats)
+    const languages: LanguageData[] = Object.entries(languageStats)
       .map(([name, stats]: [string, any]) => ({
         name,
-        value: Math.round((stats.totalBytes / totalBytes) * 100),
+        value: Math.round((stats.totalBytes / Object.values(languageStats).reduce((sum: number, s: any) => sum + s.totalBytes, 0)) * 100),
         color: LANGUAGE_COLORS[name as keyof typeof LANGUAGE_COLORS] || LANGUAGE_COLORS.Other,
       }))
-      .filter(lang => lang.value > 0)
       .sort((a, b) => b.value - a.value)
-      .slice(0, 6); // Top 6 languages
+      .slice(0, 6);
 
     const width = 500;
-    const height = 240;
-    const barHeight = 20;
-    const barSpacing = 10;
+    const height = 300;
+    const margin = { top: 40, right: 30, bottom: 60, left: 40 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+    const barWidth = chartWidth / languages.length * 0.7;
+    const barSpacing = chartWidth / languages.length * 0.3;
     const maxValue = Math.max(...languages.map(lang => lang.value));
 
     const bars = languages.map((lang, i) => {
-      const barWidth = (lang.value / maxValue) * 250;
-      const y = 40 + i * (barHeight + barSpacing);
+      const barHeight = (lang.value / maxValue) * chartHeight;
+      const x = margin.left + i * (barWidth + barSpacing) + barSpacing / 2;
+      const y = margin.top + chartHeight - barHeight;
 
       return `
         <g>
           <rect
-            x="120"
+            x="${x}"
             y="${y}"
             width="${barWidth}"
             height="${barHeight}"
             fill="${lang.color}"
+            opacity="0.9"
             style="shape-rendering: crispEdges;"
           />
           <text
-            x="110"
-            y="${y + barHeight - 2}"
-            fill="#ffffff"
-            font-size="12"
+            x="${x + barWidth / 2}"
+            y="${height - margin.bottom + 15}"
+            fill="#00ff41"
+            font-size="10"
             font-family="monospace"
-            text-anchor="end"
+            text-anchor="middle"
             font-weight="bold"
           >
-            ${lang.name.toUpperCase()}
+            ${lang.name}
           </text>
           <text
-            x="${120 + barWidth + 10}"
-            y="${y + barHeight - 2}"
+            x="${x + barWidth / 2}"
+            y="${y - 5}"
             fill="#ffffff"
             font-size="11"
             font-family="monospace"
+            text-anchor="middle"
+            font-weight="bold"
           >
             ${lang.value}%
           </text>
         </g>
+      `;
+    }).join("");
+
+    // Add grid lines
+    const gridLines = Array.from({ length: 5 }, (_, i) => {
+      const y = margin.top + (chartHeight / 4) * i;
+      const value = Math.round(maxValue * (1 - i / 4));
+      return `
+        <line
+          x1="${margin.left}"
+          y1="${y}"
+          x2="${width - margin.right}"
+          y2="${y}"
+          stroke="#16213e"
+          stroke-width="1"
+          opacity="0.3"
+        />
+        <text
+          x="${margin.left - 10}"
+          y="${y + 3}"
+          fill="#00ff41"
+          font-size="9"
+          font-family="monospace"
+          text-anchor="end"
+        >
+          ${value}%
+        </text>
       `;
     }).join("");
 
@@ -84,23 +111,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           LANGUAGES USED
         </text>
 
+        ${gridLines}
         ${bars}
+        
+        <line
+          x1="${margin.left}"
+          y1="${margin.top + chartHeight}"
+          x2="${width - margin.right}"
+          y2="${margin.top + chartHeight}"
+          stroke="#00ff41"
+          stroke-width="2"
+        />
+        <line
+          x1="${margin.left}"
+          y1="${margin.top}"
+          x2="${margin.left}"
+          y2="${margin.top + chartHeight}"
+          stroke="#00ff41"
+          stroke-width="2"
+        />
       </svg>
     `;
 
     res.status(200).send(svg);
   } catch (error) {
-    // Fallback to demo data if API fails
-    const languages: Language[] = [
-      { name: "TypeScript", value: 35, color: LANGUAGE_COLORS.TypeScript },
-      { name: "JavaScript", value: 25, color: LANGUAGE_COLORS.JavaScript },
-      { name: "Python", value: 20, color: LANGUAGE_COLORS.Python },
-      { name: "CSS", value: 10, color: LANGUAGE_COLORS.CSS },
-      { name: "HTML", value: 6, color: LANGUAGE_COLORS.HTML },
-      { name: "Other", value: 4, color: LANGUAGE_COLORS.Other },
-    ];
-
-    // Generate fallback SVG...
-    res.status(200).send("<!-- Error loading real data -->");
+    console.error('Languages API Error:', error);
+    // Send a fallback SVG with error message
+    const fallbackSvg = `
+      <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
+        <text x="20" y="24" fill="#ff0000" font-size="14" font-family="monospace" font-weight="bold">
+          LANGUAGES USED - ERROR
+        </text>
+        <text x="20" y="50" fill="#ffffff" font-size="12" font-family="monospace">
+          Failed to load data: ${(error as Error).message}
+        </text>
+      </svg>
+    `;
+    res.status(200).send(fallbackSvg);
   }
 }
