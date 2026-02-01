@@ -26,10 +26,10 @@ const Custom404: NextPage = () => {
           <div className="bg-gray-800 border-2 border-green-400 rounded-lg p-8 max-w-md mx-auto">
             <div className="mb-6">
               <div className="text-gray-300 mb-4" style={{ fontFamily: 'monospace' }}>
-                <span className="text-green-400">$</span> find /github-graphs -name "page"
+                <span className="text-green-400">$</span> find /github-graphs -name &quot;page&quot;
               </div>
               <div className="text-red-400" style={{ fontFamily: 'monospace' }}>
-                find: '/github-graphs/page': No such file or directory
+                find: &#39;/github-graphs/page&#39;: No such file or directory
               </div>
             </div>
 
@@ -46,7 +46,7 @@ const Custom404: NextPage = () => {
             </div>
 
             <div className="text-yellow-400 mb-8" style={{ fontFamily: 'monospace' }}>
-              ⚠️ The page you're looking for doesn't exist
+              ⚠️ The page you&apos;re looking for doesn&apos;t exist
             </div>
 
             <Link 
