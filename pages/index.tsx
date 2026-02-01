@@ -38,22 +38,19 @@ export default function Home({ commits, streak }: HomeProps) {
 
         <main className="space-y-8">
           <section className="flex justify-center">
-            <div className="border-4 border-green-400 bg-black p-2">
+            <div className="border-4 border-green-400 bg-black p-2" style={{width: '100%'}}>
               <div dangerouslySetInnerHTML={{
                 __html: lineChartSVG(commits),
               }} />
             </div>
           </section>
 
-          <section className="flex justify-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="border-4 border-green-400 bg-black p-2">
               <div dangerouslySetInnerHTML={{
                 __html: streakSVG(streak),
               }} />
             </div>
-          </section>
-
-          <section className="flex justify-center">
             <div className="border-4 border-green-400 bg-black p-2">
               <img 
                 src="/api/languages" 
@@ -62,7 +59,7 @@ export default function Home({ commits, streak }: HomeProps) {
                 style={{imageRendering: 'pixelated'}}
               />
             </div>
-          </section>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="border-4 border-green-400 bg-black p-2">

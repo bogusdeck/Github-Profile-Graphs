@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { REPO_COLORS } from "../../lib/constants";
+import { getUserRepositories } from "../../lib/github";
+import { REPO_COLORS, RETRO_COLORS } from "../../lib/constants";
 
 interface RepoData {
   name: string;
@@ -7,84 +8,133 @@ interface RepoData {
   color: string;
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader("Content-Type", "image/svg+xml");
-  res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
+  res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
 
-  const repos: RepoData[] = [
-    { name: "VDAY", value: 142, color: REPO_COLORS[0] },
-    { name: "Kitty-dotfiles", value: 98, color: REPO_COLORS[1] },
-    { name: "Tamely", value: 76, color: REPO_COLORS[2] },
-    { name: "bogusdeck.github.io", value: 65, color: REPO_COLORS[3] },
-    { name: "Digital-apology-letter", value: 54, color: REPO_COLORS[4] },
-    { name: "flask-portfolio", value: 43, color: REPO_COLORS[5] },
-    { name: "Selenium-prac", value: 32, color: REPO_COLORS[6] },
-  ];
+  try {
+    const repos = await getUserRepositories();
 
-  const width = 480;
-  const height = 300;
-  const cx = width / 2;
-  const cy = height / 2 + 20;
-  const maxRadius = 60;
+    // Convert to chart data with star counts
+    const repoData: RepoData[] = repos
+      .filter(repo => repo.stargazers_count > 0)
+      .sort((a, b) => b.stargazers_count - a.stargazers_count)
+      .slice(0, 7)
+      .map((repo, index) => ({
+        name: repo.name,
+        value: repo.stargazers_count,
+        color: REPO_COLORS[index % REPO_COLORS.length],
+      }));
 
-  const maxValue = Math.max(...repos.map(repo => repo.value));
+    const width = 500;
+    const height = 280;
+    const margin = { top: 40, right: 30, bottom: 30, left: 120 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+    const barHeight = chartHeight / repoData.length * 0.7;
+    const barSpacing = chartHeight / repoData.length * 0.3;
+    const maxValue = Math.max(...repoData.map(repo => repo.value));
 
-  const stars = repos.map((repo, i) => {
-    const angle = (i / repos.length) * 2 * Math.PI - Math.PI / 2;
-    const radius = Math.sqrt(repo.value / maxValue) * maxRadius;
-    const x = cx + radius * Math.cos(angle);
-    const y = cy + radius * Math.sin(angle);
+    const bars = repoData.map((repo, i) => {
+      const barWidth = (repo.value / maxValue) * chartWidth;
+      const y = margin.top + i * (barHeight + barSpacing) + barSpacing / 2;
+      const displayName = repo.name.length > 18 ? repo.name.substring(0, 15) + "..." : repo.name;
 
-    // Create star shape
-    const starPoints = [];
-    for (let j = 0; j < 10; j++) {
-      const angle = (j * Math.PI) / 5 - Math.PI / 2;
-      const r = j % 2 === 0 ? radius : radius * 0.5;
-      starPoints.push(`${x + r * Math.cos(angle)},${y + r * Math.sin(angle)}`);
-    }
+      return `
+        <g>
+          <rect
+            x="${margin.left}"
+            y="${y}"
+            width="${barWidth}"
+            height="${barHeight}"
+            fill="${repo.color}"
+            opacity="0.9"
+            style="shape-rendering: crispEdges;"
+          />
+          <text
+            x="${margin.left - 10}"
+            y="${y + barHeight / 2 + 4}"
+            fill="${RETRO_COLORS.MATRIX_GREEN}"
+            font-size="10"
+            font-family="monospace"
+            text-anchor="end"
+            font-weight="bold"
+          >
+            ${displayName}
+          </text>
+          <text
+            x="${margin.left + barWidth + 10}"
+            y="${y + barHeight / 2 + 4}"
+            fill="${RETRO_COLORS.WHITE}"
+            font-size="11"
+            font-family="monospace"
+            font-weight="bold"
+          >
+            ${repo.value} ⭐
+          </text>
+        </g>
+      `;
+    }).join("");
 
-    return `
-      <g>
-        <polygon
-          points="${starPoints.join(' ')}"
-          fill="${repo.color}"
-          opacity="0.8"
+    // Add grid lines
+    const gridLines = Array.from({ length: 4 }, (_, i) => {
+      const x = margin.left + (chartWidth / 3) * i;
+      const value = Math.round(maxValue * (i / 3));
+      return `
+        <line
+          x1="${x}"
+          y1="${margin.top}"
+          x2="${x}"
+          y2="${height - margin.bottom}"
+          stroke="${RETRO_COLORS.BORDER_COLOR}"
+          stroke-width="1"
+          opacity="0.3"
         />
         <text
           x="${x}"
-          y="${y + radius + 15}"
-          fill="#e5e7eb"
-          font-size="8"
+          y="${height - margin.bottom + 15}"
+          fill="${RETRO_COLORS.MATRIX_GREEN}"
+          font-size="9"
           font-family="monospace"
           text-anchor="middle"
         >
-          ${repo.name.length > 12 ? repo.name.substring(0, 9) + "..." : repo.name}
+          ${value}
         </text>
-        <text
-          x="${x}"
-          y="${y + radius + 25}"
-          fill="#9ca3af"
-          font-size="7"
-          font-family="monospace"
-          text-anchor="middle"
-        >
-          ${repo.value} ⭐
+      `;
+    }).join("");
+
+    const svg = `
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
+        <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
+        
+        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="monospace" font-weight="bold">
+          STARS PER REPO
         </text>
-      </g>
+
+        ${gridLines}
+        ${bars}
+        
+        <line
+          x1="${margin.left}"
+          y1="${margin.top}"
+          x2="${margin.left}"
+          y2="${height - margin.bottom}"
+          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke-width="2"
+        />
+        <line
+          x1="${margin.left}"
+          y1="${height - margin.bottom}"
+          x2="${width - margin.right}"
+          y2="${height - margin.bottom}"
+          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke-width="2"
+        />
+      </svg>
     `;
-  }).join("");
 
-  const svg = `
-    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" rx="14" fill="#020617"/>
-      
-      <text x="20" y="24" fill="#e5e7eb" font-size="14" font-family="monospace">
-        Stars per Repo
-      </text>
-
-      ${stars}
-    </svg>
-  `;
-
-  res.status(200).send(svg);
+    res.status(200).send(svg);
+  } catch (error) {
+    res.status(200).send("<!-- Error loading real data -->");
+  }
 }

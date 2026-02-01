@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { REPO_COLORS } from "../../lib/constants";
+import { getCommitsPerRepo } from "../../lib/github";
+import { REPO_COLORS, RETRO_COLORS } from "../../lib/constants";
 
 interface RepoData {
   name: string;
@@ -7,89 +8,135 @@ interface RepoData {
   color: string;
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader("Content-Type", "image/svg+xml");
-  res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
+  res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
 
-  const repos: RepoData[] = [
-    { name: "bogusdeck.github.io", value: 342, color: REPO_COLORS[0] },
-    { name: "sh-plugin", value: 278, color: REPO_COLORS[1] },
-    { name: "e-commerce-flask-app", value: 234, color: REPO_COLORS[2] },
-    { name: "Tamely", value: 189, color: REPO_COLORS[3] },
-    { name: "flask-portfolio", value: 156, color: REPO_COLORS[4] },
-    { name: "Text-Review-authenticity-checker", value: 123, color: REPO_COLORS[5] },
-    { name: "BRS", value: 98, color: REPO_COLORS[6] },
-    { name: "whatsapp_chat_exporter", value: 87, color: REPO_COLORS[7] },
-    { name: "ReviewReward", value: 65, color: REPO_COLORS[8] },
-    { name: "POOPlicious", value: 43, color: REPO_COLORS[9] },
-  ];
+  try {
+    const repoCommits = await getCommitsPerRepo();
+    
+    // Convert to chart data with colors
+    const repos: RepoData[] = repoCommits
+      .slice(0, 10)
+      .map((repo, index) => ({
+        name: repo.name,
+        value: repo.commits,
+        color: REPO_COLORS[index % REPO_COLORS.length],
+      }));
 
-  const width = 600;
-  const height = 350;
-  const margin = { top: 20, right: 30, bottom: 80, left: 40 };
-  const chartWidth = width - margin.left - margin.right;
-  const chartHeight = height - margin.top - margin.bottom;
-  const barHeight = chartHeight / repos.length;
-  const maxValue = Math.max(...repos.map(repo => repo.value));
+    const width = 600;
+    const height = 400;
+    const margin = { top: 40, right: 30, bottom: 100, left: 50 };
+    const chartWidth = width - margin.left - margin.right;
+    const chartHeight = height - margin.top - margin.bottom;
+    const barWidth = chartWidth / repos.length * 0.7;
+    const barSpacing = chartWidth / repos.length * 0.3;
+    const maxValue = Math.max(...repos.map(repo => repo.value));
 
-  const bars = repos.map((repo, i) => {
-    const barWidth = (repo.value / maxValue) * chartWidth;
-    const y = margin.top + i * barHeight;
+    const bars = repos.map((repo, i) => {
+      const barHeight = (repo.value / maxValue) * chartHeight;
+      const x = margin.left + i * (barWidth + barSpacing) + barSpacing / 2;
+      const y = margin.top + chartHeight - barHeight;
 
-    return `
-      <g>
-        <rect
-          x="${margin.left}"
-          y="${y + barHeight * 0.1}"
-          width="${barWidth}"
-          height="${barHeight * 0.8}"
-          fill="${repo.color}"
-          opacity="0.8"
-          rx="4"
+      // Truncate long names
+      const displayName = repo.name.length > 12 ? repo.name.substring(0, 9) + "..." : repo.name;
+
+      return `
+        <g>
+          <rect
+            x="${x}"
+            y="${y}"
+            width="${barWidth}"
+            height="${barHeight}"
+            fill="${repo.color}"
+            opacity="0.9"
+            style="shape-rendering: crispEdges;"
+          />
+          <text
+            x="${x + barWidth / 2}"
+            y="${height - margin.bottom + 15}"
+            fill="${RETRO_COLORS.MATRIX_GREEN}"
+            font-size="10"
+            font-family="monospace"
+            text-anchor="middle"
+            font-weight="bold"
+          >
+            ${displayName}
+          </text>
+          <text
+            x="${x + barWidth / 2}"
+            y="${y - 5}"
+            fill="${RETRO_COLORS.WHITE}"
+            font-size="11"
+            font-family="monospace"
+            text-anchor="middle"
+            font-weight="bold"
+          >
+            ${repo.value}
+          </text>
+        </g>
+      `;
+    }).join("");
+
+    // Add grid lines
+    const gridLines = Array.from({ length: 5 }, (_, i) => {
+      const y = margin.top + (chartHeight / 4) * i;
+      const value = Math.round(maxValue * (1 - i / 4));
+      return `
+        <line
+          x1="${margin.left}"
+          y1="${y}"
+          x2="${width - margin.right}"
+          y2="${y}"
+          stroke="${RETRO_COLORS.BORDER_COLOR}"
+          stroke-width="1"
+          opacity="0.3"
         />
         <text
           x="${margin.left - 10}"
-          y="${y + barHeight / 2 + 4}"
-          fill="#e5e7eb"
+          y="${y + 3}"
+          fill="${RETRO_COLORS.MATRIX_GREEN}"
           font-size="9"
           font-family="monospace"
           text-anchor="end"
         >
-          ${repo.name.length > 15 ? repo.name.substring(0, 12) + "..." : repo.name}
+          ${value}
         </text>
-        <text
-          x="${margin.left + barWidth + 10}"
-          y="${y + barHeight / 2 + 4}"
-          fill="#9ca3af"
-          font-size="9"
-          font-family="monospace"
-        >
-          ${repo.value}
+      `;
+    }).join("");
+
+    const svg = `
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
+        <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
+        
+        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="monospace" font-weight="bold">
+          COMMITS PER REPO (TOP 10)
         </text>
-      </g>
+
+        ${gridLines}
+        ${bars}
+        
+        <line
+          x1="${margin.left}"
+          y1="${margin.top + chartHeight}"
+          x2="${width - margin.right}"
+          y2="${margin.top + chartHeight}"
+          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke-width="2"
+        />
+        <line
+          x1="${margin.left}"
+          y1="${margin.top}"
+          x2="${margin.left}"
+          y2="${margin.top + chartHeight}"
+          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke-width="2"
+        />
+      </svg>
     `;
-  }).join("");
 
-  const svg = `
-    <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" rx="14" fill="#020617"/>
-      
-      <text x="20" y="24" fill="#e5e7eb" font-size="14" font-family="monospace">
-        Commits per Repo (top 10)
-      </text>
-
-      ${bars}
-      
-      <line
-        x1="${margin.left}"
-        y1="${margin.top}"
-        x2="${margin.left}"
-        y2="${height - margin.bottom}"
-        stroke="#374151"
-        stroke-width="1"
-      />
-    </svg>
-  `;
-
-  res.status(200).send(svg);
+    res.status(200).send(svg);
+  } catch (error) {
+    res.status(200).send("<!-- Error loading real data -->");
+  }
 }
