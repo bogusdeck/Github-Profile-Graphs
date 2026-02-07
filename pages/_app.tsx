@@ -1,12 +1,10 @@
 import "../styles/globals.css";
-import "../styles/fonts.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    // Ensure Tailwind CDN is loaded
     if (typeof window !== 'undefined' && !(window as any).tailwind) {
       const script = document.createElement('script');
       script.src = 'https://cdn.tailwindcss.com';
@@ -19,40 +17,48 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <script src="https://cdn.tailwindcss.com" async />
+        {/* Google Fonts - Pixel/Retro style fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet" />
+        
         <style>{`
-          /* Retro Pixel Game Styling */
+          /* Use Google Fonts as reliable pixel fonts */
           .retro-title {
-            font-family: 'Minecrafter', 'Retro Gaming', monospace !important;
-            letter-spacing: 0.15em !important;
-            text-transform: uppercase !important;
-            -webkit-font-smoothing: none !important;
-            -moz-osx-font-smoothing: unset !important;
-          }
-
-          .retro-text {
-            font-family: 'Determination', 'Retro Gaming', monospace !important;
-            letter-spacing: 0.05em !important;
-            -webkit-font-smoothing: none !important;
-            -moz-osx-font-smoothing: unset !important;
-          }
-
-          .retro-3d {
-            font-family: 'Botsmatic 3D', 'Minecrafter', monospace !important;
+            font-family: 'Press Start 2P', 'VT323', monospace !important;
             letter-spacing: 0.1em !important;
-            -webkit-font-smoothing: none !important;
-            -moz-osx-font-smoothing: unset !important;
+            text-transform: uppercase !important;
+            font-size: 0.9em !important;
+            line-height: 1.4 !important;
           }
-
+          
+          .retro-text {
+            font-family: 'VT323', 'Pixelify Sans', monospace !important;
+            letter-spacing: 0.05em !important;
+            font-size: 1.1em !important;
+          }
+          
+          /* Global font application */
+          html, body {
+            font-family: 'VT323', 'Pixelify Sans', monospace !important;
+          }
+          
+          h1, h2, h3, h4, h5, h6 {
+            font-family: 'Press Start 2P', 'VT323', monospace !important;
+            letter-spacing: 0.1em !important;
+            text-transform: uppercase !important;
+            font-size: 0.85em !important;
+            line-height: 1.5 !important;
+          }
+          
           /* Ensure pixelated rendering */
           * {
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
           }
-
-          /* Ensure basic styles are applied */
+          
+          /* Tailwind fallback styles */
           .container {
             max-width: 1200px;
             margin: 0 auto;
