@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="${RETRO_COLORS.MATRIX_GREEN}"
             font-size="10"
-            font-family="'Minecrafter', 'Retro Gaming', monospace"
+            font-family="'Determination', 'Retro Gaming', monospace"
             text-anchor="end"
             font-weight="bold"
           >
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="${RETRO_COLORS.WHITE}"
             font-size="11"
-            font-family="'Minecrafter', 'Retro Gaming', monospace"
+            font-family="'Determination', 'Retro Gaming', monospace"
             font-weight="bold"
           >
             ${repo.value} ⭐
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y="${height - margin.bottom + 15}"
           fill="${RETRO_COLORS.MATRIX_GREEN}"
           font-size="9"
-          font-family="'Minecrafter', 'Retro Gaming', monospace"
+          font-family="'Determination', 'Retro Gaming', monospace"
           text-anchor="middle"
         >
           ${value}
@@ -107,7 +107,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
 
-        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           STARS PER REPO
         </text>
 

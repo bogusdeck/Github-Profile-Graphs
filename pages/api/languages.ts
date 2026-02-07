@@ -107,7 +107,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
 
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED
         </text>
 
@@ -140,10 +140,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fallbackSvg = `
       <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
-        <text x="20" y="24" fill="#ff0000" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#ff0000" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED - ERROR
         </text>
-        <text x="20" y="50" fill="#ffffff" font-size="12" font-family="'Minecrafter', 'Retro Gaming', monospace">
+        <text x="20" y="50" fill="#ffffff" font-size="12" font-family="'Determination', 'Retro Gaming', monospace">
           Failed to load data: ${(error as Error).message}
         </text>
       </svg>

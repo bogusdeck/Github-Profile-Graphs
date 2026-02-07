@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="#00ff41"
             font-size="11"
-            font-family="'Minecrafter', 'Retro Gaming', monospace"
+            font-family="'Determination', 'Retro Gaming', monospace"
             text-anchor="end"
             font-weight="bold"
           >
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="#ffffff"
             font-size="11"
-            font-family="'Minecrafter', 'Retro Gaming', monospace"
+            font-family="'Determination', 'Retro Gaming', monospace"
             font-weight="bold"
           >
             ${lang.value}
@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y="${height - margin.bottom + 15}"
           fill="#00ff41"
           font-size="9"
-          font-family="'Minecrafter', 'Retro Gaming', monospace"
+          font-family="'Determination', 'Retro Gaming', monospace"
           text-anchor="middle"
         >
           ${value}
@@ -106,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
         
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           REPOS PER LANGUAGE
         </text>
 

@@ -83,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               y="${labelY + 3}"
               fill="#ffffff"
               font-size="10"
-              font-family="'Minecrafter', 'Retro Gaming', monospace"
+              font-family="'Determination', 'Retro Gaming', monospace"
               text-anchor="middle"
               font-weight="bold"
             >
@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               y="${labelY + 15}"
               fill="#ffffff"
               font-size="9"
-              font-family="'Minecrafter', 'Retro Gaming', monospace"
+              font-family="'Determination', 'Retro Gaming', monospace"
               text-anchor="middle"
             >
               ${lang.value}
@@ -108,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
         
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           STARS PER LANGUAGE
         </text>
 
