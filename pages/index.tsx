@@ -24,19 +24,19 @@ export default function Home() {
         {/* Header */}
         <header className="text-center mb-10">
           <div 
-            className="inline-block border-4 border-green-400 bg-black p-4 sm:p-6 rounded"
+            className="inline-block border-4 border-green-400 bg-black p-4 sm:p-6 rounded retro-title"
             style={{ boxShadow: '4px 4px 0px #00ff41' }}
           >
             <h1 
-              className="text-xl sm:text-2xl md:text-4xl font-bold text-green-400 mb-2"
+              className="text-xl sm:text-2xl md:text-4xl font-bold text-green-400 mb-2 retro-title"
               style={{ 
-                letterSpacing: '0.1em', 
-                textShadow: '2px 2px 0px #00ff41' 
+                letterSpacing: '0.15em', 
+                textShadow: '3px 3px 0px #008000, 6px 6px 0px #004d00' 
               }}
             >
               📊 GITHUB GRAPH PLAYGROUND
             </h1>
-            <p className="text-green-400 text-xs sm:text-sm md:text-base">
+            <p className="text-green-400 text-xs sm:text-sm md:text-base retro-text">
               Retro 8-bit GitHub Profile Analytics
             </p>
           </div>
@@ -158,7 +158,7 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="text-center mt-10 pt-6 border-t-2 border-green-800">
+        <footer className="text-center mt-10 pt-6 border-t-2 border-green-800 retro-text">
           <p className="text-green-400 text-xs">
             Built with Next.js • Styled with Tailwind • Powered by GitHub API
           </p>
@@ -177,6 +177,16 @@ export default function Home() {
         img {
           max-width: 100%;
           display: block;
+        }
+
+        /* Retro pixel game font application */
+        h1, h2, h3 {
+          font-family: 'Minecrafter', 'Retro Gaming', monospace !important;
+          letter-spacing: 0.15em !important;
+        }
+
+        body, p, span, div {
+          font-family: 'Determination', 'Retro Gaming', monospace !important;
         }
       `}</style>
     </div>

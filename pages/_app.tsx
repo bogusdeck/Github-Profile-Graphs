@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "../styles/fonts.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -18,7 +19,39 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <script src="https://cdn.tailwindcss.com" async />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <style>{`
+          /* Retro Pixel Game Styling */
+          .retro-title {
+            font-family: 'Minecrafter', 'Retro Gaming', monospace !important;
+            letter-spacing: 0.15em !important;
+            text-transform: uppercase !important;
+            -webkit-font-smoothing: none !important;
+            -moz-osx-font-smoothing: unset !important;
+          }
+          
+          .retro-text {
+            font-family: 'Determination', 'Retro Gaming', monospace !important;
+            letter-spacing: 0.05em !important;
+            -webkit-font-smoothing: none !important;
+            -moz-osx-font-smoothing: unset !important;
+          }
+          
+          .retro-3d {
+            font-family: 'Botsmatic 3D', 'Minecrafter', monospace !important;
+            letter-spacing: 0.1em !important;
+            -webkit-font-smoothing: none !important;
+            -moz-osx-font-smoothing: unset !important;
+          }
+          
+          /* Ensure pixelated rendering */
+          * {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+          }
+          
           /* Ensure basic styles are applied */
           .container {
             max-width: 1200px;

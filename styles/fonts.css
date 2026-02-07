@@ -1,0 +1,82 @@
+/* Retro Pixel Game Fonts */
+
+/* Retro Gaming - Main pixel font */
+@font-face {
+  font-family: 'Retro Gaming';
+  src: url('/fonts/Retro Gaming.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Determination - Undertale style pixel font */
+@font-face {
+  font-family: 'Determination';
+  src: url('/fonts/determination.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Minecrafter - Minecraft style pixel font */
+@font-face {
+  font-family: 'Minecrafter';
+  src: url('/fonts/Minecrafter-MA3Dw.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Botsmatic - 3D effect pixel font */
+@font-face {
+  font-family: 'Botsmatic 3D';
+  src: url('/fonts/Botsmatic3d-Exl8.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Botsmatic - Outline pixel font */
+@font-face {
+  font-family: 'Botsmatic Outline';
+  src: url('/fonts/BotsmaticOutline-anZg.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Retro pixel text rendering */
+.retro-pixel-text {
+  font-family: 'Retro Gaming', 'Minecrafter', monospace;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: geometricPrecision;
+}
+
+/* Retro game title style */
+.retro-title {
+  font-family: 'Minecrafter', 'Retro Gaming', monospace;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Retro body text */
+.retro-body {
+  font-family: 'Determination', 'Retro Gaming', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* 3D retro text effect */
+.retro-3d {
+  font-family: 'Botsmatic 3D', 'Retro Gaming', monospace;
+  letter-spacing: 0.1em;
+}
+
+/* Outline retro text */
+.retro-outline {
+  font-family: 'Botsmatic Outline', 'Retro Gaming', monospace;
+  letter-spacing: 0.1em;
+}

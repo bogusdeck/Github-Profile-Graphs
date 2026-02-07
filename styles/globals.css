@@ -1,8 +1,11 @@
 html {
-  font-family: system-ui, sans-serif;
+  font-family: 'Determination', 'Retro Gaming', monospace;
 }
 
 body {
   margin: 0;
   padding: 0;
+  font-family: 'Determination', 'Retro Gaming', monospace;
+  background-color: #000000;
+  color: #00ff41;
 }
