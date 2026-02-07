@@ -48,7 +48,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const y = cy + (radius + 20) * Math.sin(angle);
       return `
         <text x="${x}" y="${y}" fill="#e5e7eb" font-size="11"
-          font-family="monospace" text-anchor="middle">
+          font-family="'Minecrafter', 'Retro Gaming', monospace" text-anchor="middle">
           ${s.name}
         </text>
       `;

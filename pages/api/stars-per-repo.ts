@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getUserRepositories } from "../../lib/github";
-import { REPO_COLORS, RETRO_COLORS } from "../../lib/constants";
+import { VIBRANT_COLOR_ARRAY, RETRO_COLORS } from "../../lib/constants";
 
 interface RepoData {
   name: string;
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .map((repo, index) => ({
         name: repo.name,
         value: repo.stargazers_count,
-        color: REPO_COLORS[index % REPO_COLORS.length],
+        color: VIBRANT_COLOR_ARRAY[index % VIBRANT_COLOR_ARRAY.length],
       }));
 
     const width = 500;
@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="${RETRO_COLORS.MATRIX_GREEN}"
             font-size="10"
-            font-family="monospace"
+            font-family="'Minecrafter', 'Retro Gaming', monospace"
             text-anchor="end"
             font-weight="bold"
           >
@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y + barHeight / 2 + 4}"
             fill="${RETRO_COLORS.WHITE}"
             font-size="11"
-            font-family="monospace"
+            font-family="'Minecrafter', 'Retro Gaming', monospace"
             font-weight="bold"
           >
             ${repo.value} ⭐
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y="${height - margin.bottom + 15}"
           fill="${RETRO_COLORS.MATRIX_GREEN}"
           font-size="9"
-          font-family="monospace"
+          font-family="'Minecrafter', 'Retro Gaming', monospace"
           text-anchor="middle"
         >
           ${value}
@@ -106,14 +106,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
-        
-        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="monospace" font-weight="bold">
+
+        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
           STARS PER REPO
         </text>
 
         ${gridLines}
         ${bars}
-        
+
         <line
           x1="${margin.left}"
           y1="${margin.top}"

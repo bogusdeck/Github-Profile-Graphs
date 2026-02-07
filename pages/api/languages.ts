@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getLanguageStats } from "../../lib/github";
-import { LANGUAGE_COLORS } from "../../lib/constants";
+import { VIBRANT_COLOR_ARRAY } from "../../lib/constants";
 
 interface Language {
   name: string;
@@ -14,13 +14,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const languageStats = await getLanguageStats();
-    
+
     // Convert to language array with percentages
     const languages: Language[] = Object.entries(languageStats)
-      .map(([name, stats]: [string, any]) => ({
+      .map(([name, stats]: [string, any], index: number) => ({
         name,
         value: Math.round((stats.totalBytes / Object.values(languageStats).reduce((sum: number, s: any) => sum + s.totalBytes, 0)) * 100),
-        color: LANGUAGE_COLORS[name as keyof typeof LANGUAGE_COLORS] || LANGUAGE_COLORS.Other,
+        color: VIBRANT_COLOR_ARRAY[index % VIBRANT_COLOR_ARRAY.length],
       }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 6);
@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${height - margin.bottom + 15}"
             fill="#00ff41"
             font-size="10"
-            font-family="monospace"
+            font-family="'Minecrafter', 'Retro Gaming', monospace"
             text-anchor="middle"
             font-weight="bold"
           >
@@ -66,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             y="${y - 5}"
             fill="#ffffff"
             font-size="11"
-            font-family="monospace"
+            font-family="'Minecrafter', 'Retro Gaming', monospace"
             text-anchor="middle"
             font-weight="bold"
           >
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y="${y + 3}"
           fill="#00ff41"
           font-size="9"
-          font-family="monospace"
+          font-family="'Minecrafter', 'Retro Gaming', monospace"
           text-anchor="end"
         >
           ${value}%
@@ -106,14 +106,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
-        
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="monospace" font-weight="bold">
+
+        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED
         </text>
 
         ${gridLines}
         ${bars}
-        
+
         <line
           x1="${margin.left}"
           y1="${margin.top + chartHeight}"
@@ -140,10 +140,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const fallbackSvg = `
       <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
-        <text x="20" y="24" fill="#ff0000" font-size="14" font-family="monospace" font-weight="bold">
+        <text x="20" y="24" fill="#ff0000" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED - ERROR
         </text>
-        <text x="20" y="50" fill="#ffffff" font-size="12" font-family="monospace">
+        <text x="20" y="50" fill="#ffffff" font-size="12" font-family="'Minecrafter', 'Retro Gaming', monospace">
           Failed to load data: ${(error as Error).message}
         </text>
       </svg>

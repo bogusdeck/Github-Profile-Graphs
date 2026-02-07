@@ -35,7 +35,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
       <rect width="100%" height="100%" rx="12" fill="#0f172a"/>
 
-      <text x="20" y="20" fill="#e5e7eb" font-size="14" font-family="monospace">
+      <text x="20" y="20" fill="#e5e7eb" font-size="14" font-family="'Minecrafter', 'Retro Gaming', monospace">
         Weekly Activity
       </text>
 
