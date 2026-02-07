@@ -1,91 +1,202 @@
 import { lineChartSVG, streakSVG } from "../lib/svg";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false);
+  
   // Static demo data for initial load
   const commits = [3, 5, 2, 8, 4, 6, 7];
   const streak = 42;
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-black" style={{imageRendering: 'pixelated'}}>
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-12">
-          <div className="inline-block border-4 border-green-400 bg-black p-4">
-            <h1 className="text-2xl md:text-4xl font-bold text-green-400 mb-2" style={{fontFamily: 'monospace', letterSpacing: '0.1em', textShadow: '2px 2px 0px #00ff41'}}>
+    <div 
+      className="min-h-screen bg-black text-green-400" 
+      style={{ 
+        imageRendering: 'pixelated',
+        fontFamily: 'monospace'
+      }}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <header className="text-center mb-10">
+          <div 
+            className="inline-block border-4 border-green-400 bg-black p-4 sm:p-6 rounded"
+            style={{ boxShadow: '4px 4px 0px #00ff41' }}
+          >
+            <h1 
+              className="text-xl sm:text-2xl md:text-4xl font-bold text-green-400 mb-2"
+              style={{ 
+                letterSpacing: '0.1em', 
+                textShadow: '2px 2px 0px #00ff41' 
+              }}
+            >
               📊 GITHUB GRAPH PLAYGROUND
             </h1>
-            <p className="text-green-400 text-sm md:text-base" style={{fontFamily: 'monospace'}}>
+            <p className="text-green-400 text-xs sm:text-sm md:text-base">
               Retro 8-bit GitHub Profile Analytics
             </p>
           </div>
         </header>
 
-        {/* Top three graphs - two row layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Daily coding graph - full width on top */}
-          <div className="lg:col-span-2">
-            <div className="border-4 border-green-400 bg-black p-2" style={{width: '100%', height: '180px'}}>
-              <div dangerouslySetInnerHTML={{ __html: lineChartSVG(commits, "Daily Coding") }} />
+        {/* Top Section - Daily Coding (Full Width) */}
+        <section className="mb-6">
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden"
+            style={{ minHeight: '200px' }}
+          >
+            {mounted && (
+              <div 
+                className="w-full h-full"
+                style={{ minHeight: '200px' }}
+                dangerouslySetInnerHTML={{ __html: lineChartSVG(commits, "Daily Coding") }} 
+              />
+            )}
+          </div>
+        </section>
+
+        {/* Middle Section - Streak & Languages (2 columns) */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Coding Streak */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden"
+            style={{ minHeight: '180px' }}
+          >
+            {mounted && (
+              <div 
+                className="w-full h-full flex items-center justify-center"
+                style={{ minHeight: '180px' }}
+                dangerouslySetInnerHTML={{ __html: streakSVG(streak) }} 
+              />
+            )}
+          </div>
+
+          {/* Languages Used */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
+            style={{ minHeight: '180px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold">
+              LANGUAGES USED
             </div>
-          </div>
-          
-          {/* Streak graph */}
-          <div className="border-4 border-green-400 bg-black p-2" style={{width: '100%', height: '160px'}}>
-            <div dangerouslySetInnerHTML={{ __html: streakSVG(streak) }} />
-          </div>
-          
-          {/* Languages graph */}
-          <div className="border-4 border-green-400 bg-black p-2" style={{width: '100%', height: '160px'}}>
             <img 
               src="/api/languages" 
               alt="Languages Used" 
-              style={{width: '100%', height: '100%', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '180px' }}
             />
           </div>
-        </div>
+        </section>
 
-        {/* Bottom graphs grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="border-4 border-green-400 bg-black p-2">
+        {/* Bottom Section - Stats Grid (3 columns on desktop) */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Repos per Language */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
+            style={{ minHeight: '280px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
+              REPOS PER LANGUAGE
+            </div>
             <img 
               src="/api/repos-per-language" 
               alt="Repos per Language" 
-              style={{width: '100%', height: '320px', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '280px' }}
             />
           </div>
-          
-          <div className="border-4 border-green-400 bg-black p-2">
+
+          {/* Stars per Language */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
+            style={{ minHeight: '280px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
+              STARS PER LANGUAGE
+            </div>
             <img 
               src="/api/stars-per-language" 
               alt="Stars per Language" 
-              style={{width: '100%', height: '320px', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '280px' }}
             />
           </div>
-          
-          <div className="border-4 border-green-400 bg-black p-2">
+
+          {/* Commits per Language */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
+            style={{ minHeight: '280px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
+              COMMITS PER LANGUAGE
+            </div>
             <img 
               src="/api/commits-per-language" 
               alt="Commits per Language" 
-              style={{width: '100%', height: '320px', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '280px' }}
             />
           </div>
-          
-          <div className="border-4 border-green-400 bg-black p-2">
+
+          {/* Commits per Repo */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
+            style={{ minHeight: '320px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
+              COMMITS PER REPO
+            </div>
             <img 
               src="/api/commits-per-repo" 
               alt="Commits per Repo" 
-              style={{width: '100%', height: '400px', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '320px' }}
             />
           </div>
-          
-          <div className="border-4 border-green-400 bg-black p-2">
+
+          {/* Stars per Repo */}
+          <div 
+            className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative sm:col-span-2 lg:col-span-1"
+            style={{ minHeight: '320px' }}
+          >
+            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
+              STARS PER REPO
+            </div>
             <img 
               src="/api/stars-per-repo" 
               alt="Stars per Repo" 
-              style={{width: '100%', height: '280px', objectFit: 'contain'}}
+              className="w-full h-full object-contain"
+              style={{ minHeight: '320px' }}
             />
           </div>
-        </div>
+
+        </section>
+
+        {/* Footer */}
+        <footer className="text-center mt-10 pt-6 border-t-2 border-green-800">
+          <p className="text-green-400 text-xs">
+            Built with Next.js • Styled with Tailwind • Powered by GitHub API
+          </p>
+          <p className="text-green-600 text-xs mt-2">
+            © 2026 GitHub Graph Playground
+          </p>
+        </footer>
+
       </div>
+
+      <style jsx global>{`
+        * {
+          box-sizing: border-box;
+        }
+        
+        img {
+          max-width: 100%;
+          display: block;
+        }
+      `}</style>
     </div>
   );
 }
