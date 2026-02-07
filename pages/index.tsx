@@ -13,7 +13,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div 
+    <div  
       className="min-h-screen bg-black text-green-400" 
       style={{ 
         imageRendering: 'pixelated',
@@ -79,9 +79,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
             style={{ minHeight: '180px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold">
-              LANGUAGES USED
-            </div>
             <img 
               src="/api/languages" 
               alt="Languages Used" 
@@ -98,9 +95,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
             style={{ minHeight: '280px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
-              REPOS PER LANGUAGE
-            </div>
             <img 
               src="/api/repos-per-language" 
               alt="Repos per Language" 
@@ -114,9 +108,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
             style={{ minHeight: '280px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
-              STARS PER LANGUAGE
-            </div>
             <img 
               src="/api/stars-per-language" 
               alt="Stars per Language" 
@@ -130,9 +121,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
             style={{ minHeight: '280px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
-              COMMITS PER LANGUAGE
-            </div>
             <img 
               src="/api/commits-per-language" 
               alt="Commits per Language" 
@@ -146,9 +134,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative"
             style={{ minHeight: '320px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
-              COMMITS PER REPO
-            </div>
             <img 
               src="/api/commits-per-repo" 
               alt="Commits per Repo" 
@@ -162,9 +147,6 @@ export default function Home() {
             className="border-4 border-green-400 bg-gray-900 rounded overflow-hidden relative sm:col-span-2 lg:col-span-1"
             style={{ minHeight: '320px' }}
           >
-            <div className="absolute top-2 left-4 text-xs text-green-400 font-bold z-10">
-              STARS PER REPO
-            </div>
             <img 
               src="/api/stars-per-repo" 
               alt="Stars per Repo" 
@@ -191,7 +173,7 @@ export default function Home() {
         * {
           box-sizing: border-box;
         }
-        
+
         img {
           max-width: 100%;
           display: block;
