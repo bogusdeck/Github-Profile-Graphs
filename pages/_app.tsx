@@ -30,28 +30,28 @@ export default function App({ Component, pageProps }: AppProps) {
             -webkit-font-smoothing: none !important;
             -moz-osx-font-smoothing: unset !important;
           }
-          
+
           .retro-text {
             font-family: 'Determination', 'Retro Gaming', monospace !important;
             letter-spacing: 0.05em !important;
             -webkit-font-smoothing: none !important;
             -moz-osx-font-smoothing: unset !important;
           }
-          
+
           .retro-3d {
             font-family: 'Botsmatic 3D', 'Minecrafter', monospace !important;
             letter-spacing: 0.1em !important;
             -webkit-font-smoothing: none !important;
             -moz-osx-font-smoothing: unset !important;
           }
-          
+
           /* Ensure pixelated rendering */
           * {
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
           }
-          
+
           /* Ensure basic styles are applied */
           .container {
             max-width: 1200px;
