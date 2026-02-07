@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Pixelify+Sans:wght@400;700&display=swap" rel="stylesheet" />
-        
+
         <style>{`
           /* Use Google Fonts as reliable pixel fonts */
           .retro-title {
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
             font-size: 0.9em !important;
             line-height: 1.4 !important;
           }
-          
+
           .retro-text {
             font-family: 'VT323', 'Pixelify Sans', monospace !important;
             letter-spacing: 0.05em !important;
