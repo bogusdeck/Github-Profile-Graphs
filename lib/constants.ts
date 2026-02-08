@@ -114,3 +114,25 @@ export const REPO_COLORS = [
   RETRO_COLORS.MINT_GREEN,
   RETRO_COLORS.LIGHT_YELLOW,
 ] as const;
+
+// SVG embedded font CSS - Using local retro pixel fonts
+export const SVG_FONT_CSS = `
+  @font-face {
+    font-family: 'Retro Gaming';
+    src: url('https://raw.githubusercontent.com/bogusdeck/bogusdeck-graph/main/public/fonts/RetroGaming.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Determination';
+    src: url('https://raw.githubusercontent.com/bogusdeck/bogusdeck-graph/main/public/fonts/determination.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Minecrafter';
+    src: url('https://raw.githubusercontent.com/bogusdeck/bogusdeck-graph/main/public/fonts/Minecrafter-MA3Dw.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;

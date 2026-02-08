@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getLanguageStats } from "../../lib/github";
-import { VIBRANT_COLOR_ARRAY } from "../../lib/constants";
+import { VIBRANT_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
 
 interface LanguageData {
   name: string;
@@ -14,7 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const languageStats = await getLanguageStats();
-    
+    console.log('Raw language stats:', JSON.stringify(languageStats, null, 2));
+
     // Convert to language array with repository counts
     const languages: LanguageData[] = Object.entries(languageStats)
       .map(([name, stats]: [string, any], index: number) => ({
@@ -26,6 +27,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .sort((a, b) => b.value - a.value)
       .slice(0, 9); // Top 9 languages
 
+    console.log('Filtered languages:', JSON.stringify(languages, null, 2));
+    console.log('Languages array length:', languages.length);
+
     const width = 500;
     const height = 320;
     const margin = { top: 40, right: 30, bottom: 30, left: 120 };
@@ -33,7 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const chartHeight = height - margin.top - margin.bottom;
     const barHeight = chartHeight / languages.length * 0.7;
     const barSpacing = chartHeight / languages.length * 0.3;
-    const maxValue = Math.max(...languages.map(lang => lang.value));
+    const maxValue = languages.length > 0 ? Math.max(...languages.map(lang => lang.value)) : 1;
+    console.log('Max value:', maxValue);
 
     const bars = languages.map((lang, i) => {
       const barWidth = (lang.value / maxValue) * chartWidth;
@@ -102,9 +107,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `;
     }).join("");
 
-    const svg = `
-      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
-        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
+    const svg = `\n      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">\n        <defs>\n          <style>${SVG_FONT_CSS}</style>\n        </defs>\n        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
         
         <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           REPOS PER LANGUAGE

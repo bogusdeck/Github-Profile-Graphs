@@ -25,9 +25,9 @@ export function lineChartSVG(data: number[], title: string = "Daily Coding"): st
     />
 
     ${points.split(" ").map(p => {
-      const [x, y] = p.split(",");
-      return `<rect x="${Number(x) - 4}" y="${Number(y) - 4}" width="8" height="8" fill="${RETRO_COLORS.MATRIX_GREEN}" style="shape-rendering: crispEdges;"/>`;
-    }).join("")}
+    const [x, y] = p.split(",");
+    return `<rect x="${Number(x) - 4}" y="${Number(y) - 4}" width="8" height="8" fill="${RETRO_COLORS.MATRIX_GREEN}" style="shape-rendering: crispEdges;"/>`;
+  }).join("")}
   </svg>
   `;
 }

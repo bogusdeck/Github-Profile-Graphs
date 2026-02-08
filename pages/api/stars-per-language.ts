@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getLanguageStats } from "../../lib/github";
-import { VIBRANT_COLOR_ARRAY } from "../../lib/constants";
+import { VIBRANT_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
 
 interface LanguageData {
   name: string;
@@ -106,6 +106,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const svg = `
       <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
+        <defs>
+          <style>${SVG_FONT_CSS}</style>
+        </defs>
         <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
         
         <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
