@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getLanguageStats } from "../../lib/github";
-import { VIBRANT_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
+import { GREEN_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
 
 interface Language {
   name: string;
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .map(([name, stats]: [string, any], index: number) => ({
         name,
         value: Math.round((stats.totalBytes / Object.values(languageStats).reduce((sum: number, s: any) => sum + s.totalBytes, 0)) * 100),
-        color: VIBRANT_COLOR_ARRAY[index % VIBRANT_COLOR_ARRAY.length],
+        color: GREEN_COLOR_ARRAY[index % GREEN_COLOR_ARRAY.length],
       }))
       .sort((a, b) => b.value - a.value)
       .slice(0, 6);
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <text
             x="${x + barWidth / 2}"
             y="${height - margin.bottom + 15}"
-            fill="#00ff41"
+            fill="#89c201"
             font-size="10"
             font-family="'Minecrafter', 'Retro Gaming', monospace"
             text-anchor="middle"
@@ -86,14 +86,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y1="${y}"
           x2="${width - margin.right}"
           y2="${y}"
-          stroke="#16213e"
+          stroke="#6a9a0a"
           stroke-width="1"
           opacity="0.3"
         />
         <text
           x="${margin.left - 10}"
           y="${y + 3}"
-          fill="#00ff41"
+          fill="#89c201"
           font-size="9"
           font-family="'Minecrafter', 'Retro Gaming', monospace"
           text-anchor="end"
@@ -108,9 +108,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <defs>
           <style>${SVG_FONT_CSS}</style>
         </defs>
-        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
+        <rect width="100%" height="100%" rx="4" fill="#28370d" stroke="#000000" stroke-width="2"/>
 
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#89c201" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED
         </text>
 
@@ -122,7 +122,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y1="${margin.top + chartHeight}"
           x2="${width - margin.right}"
           y2="${margin.top + chartHeight}"
-          stroke="#00ff41"
+          stroke="#89c201"
           stroke-width="2"
         />
         <line
@@ -130,7 +130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y1="${margin.top}"
           x2="${margin.left}"
           y2="${margin.top + chartHeight}"
-          stroke="#00ff41"
+          stroke="#89c201"
           stroke-width="2"
         />
       </svg>
@@ -142,7 +142,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Send a fallback SVG with error message
     const fallbackSvg = `
       <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
-        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
+        <rect width="100%" height="100%" rx="4" fill="#28370d" stroke="#000000" stroke-width="2"/>
         <text x="20" y="24" fill="#ff0000" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           LANGUAGES USED - ERROR
         </text>

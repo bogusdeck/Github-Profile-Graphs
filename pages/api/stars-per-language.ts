@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getLanguageStats } from "../../lib/github";
-import { VIBRANT_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
+import { GREEN_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
 
 interface LanguageData {
   name: string;
@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .map(([name, stats]: [string, any], index: number) => ({
         name,
         value: stats.stars,
-        color: VIBRANT_COLOR_ARRAY[index % VIBRANT_COLOR_ARRAY.length],
+        color: GREEN_COLOR_ARRAY[index % GREEN_COLOR_ARRAY.length],
       }))
       .filter(lang => lang.value > 0)
       .sort((a, b) => b.value - a.value)
@@ -109,9 +109,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <defs>
           <style>${SVG_FONT_CSS}</style>
         </defs>
-        <rect width="100%" height="100%" rx="4" fill="#1a1a2e" stroke="#16213e" stroke-width="2"/>
+        <rect width="100%" height="100%" rx="4" fill="#28370d" stroke="#000000" stroke-width="2"/>
         
-        <text x="20" y="24" fill="#00ff41" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="#89c201" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           STARS PER LANGUAGE
         </text>
 

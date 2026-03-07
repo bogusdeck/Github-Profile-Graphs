@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getCommitsPerRepo } from "../../lib/github";
-import { VIBRANT_COLOR_ARRAY, RETRO_COLORS, SVG_FONT_CSS } from "../../lib/constants";
+import { RETRO_COLORS, GREEN_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
 
 interface RepoData {
   name: string;
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       .map((repo, index) => ({
         name: repo.name,
         value: repo.commits,
-        color: VIBRANT_COLOR_ARRAY[index % VIBRANT_COLOR_ARRAY.length],
+        color: GREEN_COLOR_ARRAY[index % GREEN_COLOR_ARRAY.length],
       }));
 
     const width = 600;
@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <text
             x="${x + barWidth / 2}"
             y="${height - margin.bottom + 15}"
-            fill="${RETRO_COLORS.MATRIX_GREEN}"
+            fill="${RETRO_COLORS.CYAN}"
             font-size="10"
             font-family="'Determination', 'Retro Gaming', monospace"
             text-anchor="middle"
@@ -112,7 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         </defs>
         <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
 
-        <text x="20" y="24" fill="${RETRO_COLORS.MATRIX_GREEN}" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
+        <text x="20" y="24" fill="${RETRO_COLORS.CYAN}" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
           COMMITS PER REPO (TOP 10)
         </text>
 
@@ -124,7 +124,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y1="${margin.top + chartHeight}"
           x2="${width - margin.right}"
           y2="${margin.top + chartHeight}"
-          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke="${RETRO_COLORS.BORDER_COLOR}"
           stroke-width="2"
         />
         <line
@@ -132,7 +132,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           y1="${margin.top}"
           x2="${margin.left}"
           y2="${margin.top + chartHeight}"
-          stroke="${RETRO_COLORS.MATRIX_GREEN}"
+          stroke="${RETRO_COLORS.BORDER_COLOR}"
           stroke-width="2"
         />
       </svg>

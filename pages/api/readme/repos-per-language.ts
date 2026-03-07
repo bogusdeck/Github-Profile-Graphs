@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getLanguageStats } from "../../lib/github";
-import { GREEN_COLOR_ARRAY, SVG_FONT_CSS } from "../../lib/constants";
+import { getLanguageStats } from "../../../lib/github";
+import { GREEN_COLOR_ARRAY, SVG_FONT_CSS } from "../../../lib/constants";
 
 interface LanguageData {
   name: string;
@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const languageStats = await getLanguageStats();
-    console.log('Raw language stats:', JSON.stringify(languageStats, null, 2));
 
     // Convert to language array with repository counts
     const languages: LanguageData[] = Object.entries(languageStats)
@@ -25,20 +24,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }))
       .filter(lang => lang.value > 0)
       .sort((a, b) => b.value - a.value)
-      .slice(0, 9); // Top 9 languages
+      .slice(0, 5); // Top 5 for README
 
-    console.log('Filtered languages:', JSON.stringify(languages, null, 2));
-    console.log('Languages array length:', languages.length);
-
-    const width = 500;
-    const height = 320;
-    const margin = { top: 40, right: 30, bottom: 30, left: 120 };
+    const width = 480;
+    const height = 280;
+    const margin = { top: 30, right: 20, bottom: 30, left: 100 };
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
     const barHeight = chartHeight / languages.length * 0.7;
     const barSpacing = chartHeight / languages.length * 0.3;
     const maxValue = languages.length > 0 ? Math.max(...languages.map(lang => lang.value)) : 1;
-    console.log('Max value:', maxValue);
 
     const bars = languages.map((lang, i) => {
       const barWidth = (lang.value / maxValue) * chartWidth;
@@ -80,51 +75,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `;
     }).join("");
 
-    // Add grid lines and x-axis with dates
-    const gridLines = Array.from({ length: 4 }, (_, i) => {
-      const x = margin.left + (chartWidth / 3) * i;
-      const value = Math.round(maxValue * (i / 3));
-      return `
-        <line
-          x1="${x}"
-          y1="${margin.top}"
-          x2="${x}"
-          y2="${height - margin.bottom}"
-          stroke="#6a9a0a"
-          stroke-width="1"
-          opacity="0.3"
-        />
-      `;
-    }).join("");
-
-    // Add x-axis with repo counts
-    const xAxisLabels = Array.from({ length: 4 }, (_, i) => {
-      const x = margin.left + (chartWidth / 3) * i;
-      const value = Math.round(maxValue * (i / 3));
-      return `
-        <text
-          x="${x}"
-          y="${height - margin.bottom + 15}"
-          fill="#89c201"
-          font-size="9"
-          font-family="'Determination', 'Retro Gaming', monospace"
-          text-anchor="middle"
-        >
-          ${value}
-        </text>
-      `;
-    }).join("");
-
-    const svg = `\n      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">\n        <defs>\n          <style>${SVG_FONT_CSS}</style>\n        </defs>\n        <rect width="100%" height="100%" rx="4" fill="#28370d" stroke="#000000" stroke-width="2"/>
-
-        <text x="20" y="24" fill="#89c201" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
-          REPOS PER LANGUAGE
+    const svg = `
+      <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
+        <defs>
+          <style>${SVG_FONT_CSS}</style>
+        </defs>
+        <rect width="100%" height="100%" rx="4" fill="#28370d" stroke="#000000" stroke-width="2"/>
+        
+        <text x="20" y="20" fill="#89c201" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
+          🗂️ REPOS PER LANGUAGE
         </text>
 
-        ${gridLines}
-        ${xAxisLabels}
         ${bars}
-
+        
         <line
           x1="${margin.left}"
           y1="${height - margin.bottom}"

@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GitHub Profile Graphs
 
-## Getting Started
+Use these APIs to add dynamic, retro-styled graphs to your GitHub README.md file!
 
-First, run the development server:
+## 📊 Available Graphs
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 📈 GitHub Statistics
+```markdown
+![GitHub Stats](https://your-domain.com/api/readme/stats)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 📊 Languages Used
+```markdown
+![Languages](https://your-domain.com/api/readme/languages)
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🗂️ Repositories Per Language
+```markdown
+![Repos per Language](https://your-domain.com/api/readme/repos-per-language)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 💻 Commits Per Repository
+```markdown
+![Commits per Repo](https://your-domain.com/api/readme/commits-per-repo)
+```
 
-## Learn More
+### ⭐ Stars Per Repository
+```markdown
+![Stars per Repo](https://your-domain.com/api/readme/stars-per-repo)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎨 Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Retro 8-bit Style**: Pixel-perfect graphs with retro gaming aesthetics
+- **Real-time Data**: Fetches live data from GitHub API
+- **Optimized for README**: Compact sizes perfect for profile pages
+- **Green Theme**: Consistent retro green color scheme
+- **Caching**: 1-hour cache for fast loading
+- **Error Handling**: Graceful fallbacks if API fails
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Quick Setup
 
-## Deploy on Vercel
+1. **Deploy this Next.js app** to Vercel, Netlify, or any platform
+2. **Replace `your-domain.com`** with your actual domain
+3. **Add to your README.md** file
+4. **Set up GitHub Token** in environment variables:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+GITHUB_TOKEN=your_github_personal_access_token
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Example README.md
+
+```markdown
+# 👋 Hello World!
+
+## 📊 My GitHub Activity
+
+![GitHub Stats](https://your-domain.com/api/readme/stats)
+![Languages](https://your-domain.com/api/readme/languages)
+![Repos per Language](https://your-domain.com/api/readme/repos-per-language)
+![Commits per Repo](https://your-domain.com/api/readme/commits-per-repo)
+![Stars per Repo](https://your-domain.com/api/readme/stars-per-repo)
+
+---
+
+📈 *These graphs update automatically with my latest GitHub activity!*
+```
+
+## 🔧 Customization
+
+### Graph Colors
+All graphs use a retro green theme:
+- **Primary**: `#89c201` (light green)
+- **Secondary**: `#a5d234` (lighter green)
+- **Background**: `#28370d` (dark green)
+- **Border**: `#000000` (black)
+
+### Graph Sizes
+- **Stats**: 500x200px
+- **Bar Charts**: 480-500x280px
+- **Optimized** for GitHub README display
+
+## 🌟 Benefits
+
+- **Dynamic**: Always shows your latest data
+- **Professional**: Clean, consistent design
+- **Fast**: Cached responses for quick loading
+- **Reliable**: Error handling and fallbacks
+- **Unique**: Stand out with retro gaming style
+
+## 📱 Mobile Responsive
+
+All graphs scale perfectly on mobile devices and maintain their pixelated aesthetic.
+
+---

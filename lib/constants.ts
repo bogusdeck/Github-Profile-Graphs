@@ -1,23 +1,27 @@
-// Retro 8-bit color palette for terminal theme
+// Custom green color palette
 export const RETRO_COLORS = {
   // Primary colors
-  MATRIX_GREEN: "#00ff41",
-  BRIGHT_YELLOW: "#ffff00",
-  CYAN: "#00ffff",
-  MAGENTA: "#ff00ff",
-  ORANGE: "#ff5500",
-  WHITE: "#ffffff",
+  MATRIX_GREEN: "#89c201",
+  BRIGHT_YELLOW: "#FFFF00",
+  CYAN: "#89c201",
+  MAGENTA: "#FF00FF",
+  ORANGE: "#c52f17",
+  WHITE: "#FFFFFF",
+  CYAN_DARK: "#6a9a0a",
+  CYAN_DARKER: "#4a6a08",
+  CYAN_LIGHT: "#a5d234",
 
   // Secondary colors
-  PINK: "#ff0080",
-  MINT_GREEN: "#00ff80",
-  LIME_GREEN: "#80ff00",
-  LIGHT_YELLOW: "#ffff80",
+  PINK: "#FF0080",
+  MINT_GREEN: "#00FF80",
+  LIME_GREEN: "#89c201",
+  LIGHT_YELLOW: "#FFFF80",
+  ACCENT_RED: "#c52f17",
 
   // Background colors
-  DARK_BG: "#1a1a2e",
-  BORDER_COLOR: "#16213e",
-  BLACK: "#000000",
+  DARK_BG: "#28370d",
+  BORDER_COLOR: "#2a3e0d",
+  BLACK: "#1a2508",
 } as const;
 
 // Vibrant Retro Pixel Color Palette (from user's color grid)
@@ -58,6 +62,20 @@ export const VIBRANT_RETRO_COLORS = {
   YELLOW_GREEN: "#D9FF00",
 } as const;
 
+// Green-themed color array for graphs
+export const GREEN_COLOR_ARRAY = [
+  "#89c201", // Light green
+  "#a5d234", // Lighter green
+  "#6a9a0a", // Dark green
+  "#4a6a08", // Darker green
+  "#1a2508", // Black green
+  "#89c201", // Light green (repeat)
+  "#a5d234", // Lighter green (repeat)
+  "#6a9a0a", // Dark green (repeat)
+  "#4a6a08", // Darker green (repeat)
+  "#1a2508", // Black green (repeat)
+] as const;
+
 // Color array for cycling through in graphs
 export const VIBRANT_COLOR_ARRAY = [
   VIBRANT_RETRO_COLORS.HOT_PINK,
@@ -87,31 +105,31 @@ export const VIBRANT_COLOR_ARRAY = [
   VIBRANT_RETRO_COLORS.YELLOW_GREEN,
 ] as const;
 
-// Language color mappings
+// Language color mappings with Nokia 3310 green theme
 export const LANGUAGE_COLORS = {
-  TypeScript: RETRO_COLORS.MATRIX_GREEN,
-  JavaScript: RETRO_COLORS.BRIGHT_YELLOW,
-  Python: RETRO_COLORS.CYAN,
+  TypeScript: RETRO_COLORS.LIME_GREEN,
+  JavaScript: RETRO_COLORS.CYAN_DARK,
+  Python: RETRO_COLORS.CYAN_LIGHT,
   HTML: RETRO_COLORS.ORANGE,
   CSS: RETRO_COLORS.MAGENTA,
   Shell: RETRO_COLORS.WHITE,
-  Go: RETRO_COLORS.LIME_GREEN,
+  Go: RETRO_COLORS.CYAN_DARKER,
   "C++": RETRO_COLORS.MINT_GREEN,
   Lua: RETRO_COLORS.PINK,
   Other: RETRO_COLORS.WHITE,
 } as const;
 
-// Repository color palette for variety
+// Repository color palette with Nokia 3310 green theme
 export const REPO_COLORS = [
-  RETRO_COLORS.CYAN,
-  RETRO_COLORS.BRIGHT_YELLOW,
-  RETRO_COLORS.MATRIX_GREEN,
+  RETRO_COLORS.LIME_GREEN,
+  RETRO_COLORS.CYAN_DARK,
+  RETRO_COLORS.CYAN_DARKER,
+  RETRO_COLORS.CYAN_LIGHT,
   RETRO_COLORS.MAGENTA,
   RETRO_COLORS.ORANGE,
   RETRO_COLORS.WHITE,
-  RETRO_COLORS.LIME_GREEN,
-  RETRO_COLORS.PINK,
   RETRO_COLORS.MINT_GREEN,
+  RETRO_COLORS.PINK,
   RETRO_COLORS.LIGHT_YELLOW,
 ] as const;
 
