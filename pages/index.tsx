@@ -1,34 +1,11 @@
-import { lineChartSVG, streakSVG } from "../lib/svg";
 import { useState, useEffect } from "react";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [pixelGrid, setPixelGrid] = useState<{width: number, height: number}>({width: 0, height: 0});
-  const [commits, setCommits] = useState<number[]>([3, 5, 2, 8, 4, 6, 7]);
-  const [streak] = useState(42);
-  const [isLoadingCommits, setIsLoadingCommits] = useState(true);
 
   useEffect(() => {
     setMounted(true);
-
-    // Fetch real daily commits data
-    const fetchDailyCommits = async () => {
-      setIsLoadingCommits(true);
-      try {
-        const response = await fetch('/api/daily-commits');
-        if (response.ok) {
-          const data = await response.json();
-          setCommits(data);
-        }
-      } catch (error) {
-        console.error('Error fetching daily commits:', error);
-        // Keep using fallback data
-      } finally {
-        setIsLoadingCommits(false);
-      }
-    };
-
-    fetchDailyCommits();
 
     const updateDimensions = () => {
       // Use viewport dimensions to ensure full coverage
@@ -163,13 +140,12 @@ export default function Home() {
               minHeight: '200px'
             }}
           >
-            {mounted && (
-              <div
-                className="w-full h-full"
-                style={{ minHeight: '200px' }}
-                dangerouslySetInnerHTML={{ __html: lineChartSVG(commits, "Daily Coding") }}
-              />
-            )}
+            <img
+              src="/api/daily-commits"
+              alt="Daily Coding"
+              className="w-full h-full object-contain"
+              style={{ minHeight: '200px' }}
+            />
           </div>
         </section>
 
@@ -184,13 +160,12 @@ export default function Home() {
               minHeight: '180px'
             }}
           >
-            {mounted && (
-              <div
-                className="w-full h-full flex items-center justify-center"
-                style={{ minHeight: '180px' }}
-                dangerouslySetInnerHTML={{ __html: streakSVG(streak) }}
-              />
-            )}
+            <img
+              src="/api/streak"
+              alt="Coding Streak"
+              className="w-full h-full object-contain"
+              style={{ minHeight: '180px' }}
+            />
           </div>
 
           {/* Languages Used */}

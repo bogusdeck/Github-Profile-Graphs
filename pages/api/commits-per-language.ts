@@ -139,6 +139,142 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).send(svg);
   } catch (error) {
-    res.status(200).send("<!-- Error loading real data -->");
+    console.error('Commits per Language API Error:', error);
+    
+    // Check if it's a rate limit error
+    if (error instanceof Error && error.message.includes('rate limit exceeded')) {
+      // Return fallback data when rate limited
+      const fallbackLanguages: LanguageData[] = [
+        { name: 'Python', value: 156, color: GREEN_COLOR_ARRAY[0] },
+        { name: 'JavaScript', value: 89, color: GREEN_COLOR_ARRAY[1] },
+        { name: 'TypeScript', value: 67, color: GREEN_COLOR_ARRAY[2] },
+        { name: 'Go', value: 45, color: GREEN_COLOR_ARRAY[3] },
+        { name: 'Rust', value: 34, color: GREEN_COLOR_ARRAY[4] },
+      ];
+
+      const width = 520;
+      const height = 320;
+      const margin = { top: 40, right: 30, bottom: 60, left: 50 };
+      const chartWidth = width - margin.left - margin.right;
+      const chartHeight = height - margin.top - margin.bottom;
+      const barWidth = chartWidth / fallbackLanguages.length * 0.7;
+      const barSpacing = chartWidth / fallbackLanguages.length * 0.3;
+      const maxValue = Math.max(...fallbackLanguages.map(lang => lang.value));
+
+      const bars = fallbackLanguages.map((lang, i) => {
+        const barHeight = (lang.value / maxValue) * chartHeight;
+        const x = margin.left + i * (barWidth + barSpacing) + barSpacing / 2;
+        const y = margin.top + chartHeight - barHeight;
+
+        return `
+          <g>
+            <rect
+              x="${x}"
+              y="${y}"
+              width="${barWidth}"
+              height="${barHeight}"
+              fill="${lang.color}"
+              opacity="0.9"
+              style="shape-rendering: crispEdges;"
+            />
+            <text
+              x="${x + barWidth / 2}"
+              y="${height - margin.bottom + 15}"
+              fill="${RETRO_COLORS.CYAN}"
+              font-size="10"
+              font-family="'Determination', 'Retro Gaming', monospace"
+              text-anchor="middle"
+              font-weight="bold"
+            >
+              ${lang.name}
+            </text>
+            <text
+              x="${x + barWidth / 2}"
+              y="${y - 5}"
+              fill="${RETRO_COLORS.WHITE}"
+              font-size="11"
+              font-family="'Determination', 'Retro Gaming', monospace"
+              text-anchor="middle"
+              font-weight="bold"
+            >
+              ${lang.value}
+            </text>
+          </g>
+        `;
+      }).join("");
+
+      const gridLines = Array.from({ length: 5 }, (_, i) => {
+        const y = margin.top + (chartHeight / 4) * i;
+        const value = Math.round(maxValue * (1 - i / 4));
+        return `
+          <line
+            x1="${margin.left}"
+            y1="${y}"
+            x2="${width - margin.right}"
+            y2="${y}"
+            stroke="${RETRO_COLORS.BORDER_COLOR}"
+            stroke-width="1"
+            opacity="0.3"
+          />
+          <text
+            x="${margin.left - 10}"
+            y="${y + 3}"
+            fill="${RETRO_COLORS.MATRIX_GREEN}"
+            font-size="9"
+            font-family="'Determination', 'Retro Gaming', monospace"
+            text-anchor="end"
+          >
+            ${value}
+          </text>
+        `;
+      }).join("");
+
+      const svg = `
+        <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="image-rendering: pixelated; image-rendering: -moz-crisp-edges; image-rendering: crisp-edges;">
+          <defs>
+            <style>${SVG_FONT_CSS}</style>
+          </defs>
+          <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
+
+          <text x="20" y="24" fill="${RETRO_COLORS.CYAN}" font-size="14" font-family="'Determination', 'Retro Gaming', monospace" font-weight="bold">
+            COMMITS PER LANGUAGE (RATE LIMITED)
+          </text>
+
+          ${gridLines}
+          ${bars}
+
+          <line
+            x1="${margin.left}"
+            y1="${margin.top + chartHeight}"
+            x2="${width - margin.right}"
+            y2="${margin.top + chartHeight}"
+            stroke="${RETRO_COLORS.BORDER_COLOR}"
+            stroke-width="2"
+          />
+          <line
+            x1="${margin.left}"
+            y1="${margin.top}"
+            x2="${margin.left}"
+            y2="${margin.top + chartHeight}"
+            stroke="${RETRO_COLORS.BORDER_COLOR}"
+            stroke-width="2"
+          />
+        </svg>
+      `;
+
+      return res.status(200).send(svg);
+    }
+    
+    // For other errors, return error message
+    const errorSvg = `
+      <svg width="520" height="320" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" rx="4" fill="${RETRO_COLORS.DARK_BG}" stroke="${RETRO_COLORS.BORDER_COLOR}" stroke-width="2"/>
+        <text x="260" y="160" text-anchor="middle" fill="${RETRO_COLORS.CYAN}" font-size="14" font-family="'Determination', 'Retro Gaming', monospace">
+          Error loading data
+        </text>
+      </svg>
+    `;
+    
+    res.status(200).send(errorSvg);
   }
 }
